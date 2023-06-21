@@ -19,5 +19,3 @@ class ProductService {
     }
 }
 
-let productService = new ProductService();
-export default productService;
