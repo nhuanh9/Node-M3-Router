@@ -1,5 +1,4 @@
-import fs from "fs";
-
+import fs from 'fs'
 let userRouter = {
     '/users': (req, res) => {
         fs.readFile('view/user/list.html', 'utf-8', (err, stringHTML) => {
@@ -14,4 +13,5 @@ let userRouter = {
         })
     },
 }
+
 export default userRouter;

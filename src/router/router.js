@@ -1,4 +1,4 @@
-import fs from 'fs';
+import fs from 'fs'
 import productRouter from "./productRouter.js";
 import userRouter from "./userRouter.js";
 let router = {
@@ -13,7 +13,7 @@ let router = {
             res.write(stringHTML);
             res.end();
         })
-    }
+    },
 }
 router = {...router, ...productRouter};
 router = {...router, ...userRouter};
