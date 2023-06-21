@@ -15,12 +15,7 @@ class ProductController {
                 showList(req, res);
             } else {
                 data = qs.parse(data);
-                let checkObj = productService.findById(data.id);
-                if (checkObj !== undefined) {
-                    productService.update(data)
-                } else {
-                    productService.add(data);
-                }
+                productService.save(data)
                 showList(req, res);
             }
         })

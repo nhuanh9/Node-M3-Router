@@ -14,15 +14,16 @@ class ProductService {
         return this.list;
     }
 
-    add(product) {
-        this.list.push(product)
-    }
-
-    update(productEdit) {
+    save(product) {
+        let checkExist = false;
         for (let i = 0; i < this.list.length; i++) {
-            if (this.list[i].id == productEdit.id) {
-                this.list[i] = productEdit;
+            if (this.list[i].id == product.id) {
+                this.list[i] = product;
+                checkExist = true;
             }
+        }
+        if (!checkExist) {
+            this.list.push(product)
         }
     }
 
