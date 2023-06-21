@@ -1,19 +1,11 @@
 import fs from 'fs'
 import qs from "qs";
+import productController from "../controller/productController.js";
 
 let productRouter = {
-    '/products': (req, res) => {
-        fs.readFile('view/product/list.html', 'utf-8', (err, stringHTML) => {
-            res.write(stringHTML);
-            res.end();
-        })
-    },
-    '/add-product': (req, res) => {
-        fs.readFile('view/product/add.html', 'utf-8', (err, stringHTML) => {
-            res.write(stringHTML);
-            res.end();
-        })
-    },
+    '/products': productController.showAll,
+    '/add-product': productController.showFormAdd,
+    '/edit-product': productController.showFormEdit,
 }
 
 export default productRouter;

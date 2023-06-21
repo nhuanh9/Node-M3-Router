@@ -1,19 +1,11 @@
 import fs from 'fs'
 import productRouter from "./productRouter.js";
 import userRouter from "./userRouter.js";
+import homeController from "../controller/homeController.js";
+
 let router = {
-    '/': (req, res) => {
-        fs.readFile('view/index.html', 'utf-8', (err, stringHTML) => {
-            res.write(stringHTML);
-            res.end();
-        })
-    },
-    '/err': (req, res) => {
-        fs.readFile('view/err.html', 'utf-8', (err, stringHTML) => {
-            res.write(stringHTML);
-            res.end();
-        })
-    },
+    '/': homeController.showIndex,
+    '/err': homeController.showErr,
 }
 router = {...router, ...productRouter};
 router = {...router, ...userRouter};

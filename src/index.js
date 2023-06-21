@@ -5,10 +5,8 @@ import url from 'url';
 import router from "./router/router.js";
 
 const server = http.createServer((req, res) => {
-    var parseUrl = url.parse(req.url, true);
-    var queryStringObject = parseUrl.query;
-    console.log(queryStringObject)
-    let handle = router[req.url];
+    let urlObject = url.parse(req.url, true)
+    let handle = router[urlObject.pathname];
     if (handle === undefined) {
         handle = router['/err'];
     }

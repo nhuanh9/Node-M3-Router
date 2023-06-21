@@ -17,5 +17,22 @@ class ProductService {
     add(product) {
         this.list.push(product)
     }
+
+    update(productEdit) {
+        for (let i = 0; i < this.list.length; i++) {
+            if (this.list[i].id == productEdit.id) {
+                this.list[i] = productEdit;
+            }
+        }
+    }
+
+    findById(id) {
+        for (const product of this.list) {
+            if (product.id == id) {
+                return product
+            }
+        }
+    }
 }
 
+export default new ProductService();
