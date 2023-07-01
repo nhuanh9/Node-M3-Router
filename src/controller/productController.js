@@ -24,10 +24,6 @@ class ProductController {
     showFormEdit(req, res) {
         fs.readFile('view/product/edit.html', 'utf-8', (err, stringHTML) => {
             let urlObject = url.parse(req.url, true)
-            let proEdit = productService.findById(urlObject.query.idEdit)
-            stringHTML = stringHTML.replace('{id}', proEdit.id);
-            stringHTML = stringHTML.replace('{name}', proEdit.name);
-            stringHTML = stringHTML.replace('{price}', proEdit.price);
             res.write(stringHTML);
             res.end();
         })
@@ -46,23 +42,9 @@ class ProductController {
 function showList(req, res) {
     fs.readFile('view/product/list.html', 'utf-8', (err, stringHTML) => {
         let str = '';
-        productService.findAll().then((products) => {
-            for (const item of products) {
-                str += `
-                            <article class="hentry">
-                                <header class="entry-header">
-                                    <div class="entry-thumbnail">
-                                        <a href="portfolio-item.html"><img src="${item.image}" style="width: 100%; height: 200px" alt="p1"/></a>
-                                    </div>
-                                    <h2 class="entry-title"><a href="portfolio-item.html" rel="bookmark">${item.name}</a></h2>
-                                    <a class='portfoliotype' href='portfolio-category.html'>${item.price}</a>
-                                </header>
-                            </article>`;
-            }
-            stringHTML = stringHTML.replace('{list}', str)
-            res.write(stringHTML);
-            res.end();
-        })
+        stringHTML = stringHTML.replace('{list}', str)
+        res.write(stringHTML);
+        res.end();
     })
 }
 
