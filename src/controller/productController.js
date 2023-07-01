@@ -10,12 +10,12 @@ class ProductController {
         req.on('data', dataRaw => {
             data += dataRaw;
         })
-        req.on('end', async () => {
+        req.on('end',  () => {
             if (req.method === 'GET') {
                 showList(req, res);
             } else {
                 data = qs.parse(data);
-                await productService.save(data)
+                productService.save(data)
                 showList(req, res);
             }
         })
