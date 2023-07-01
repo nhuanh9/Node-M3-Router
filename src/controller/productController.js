@@ -42,9 +42,14 @@ class ProductController {
 function showList(req, res) {
     fs.readFile('view/product/list.html', 'utf-8', (err, stringHTML) => {
         let str = '';
-        stringHTML = stringHTML.replace('{list}', str)
-        res.write(stringHTML);
-        res.end();
+        productService.findAll().then((products)=> {
+            for (const product of products) {
+                str+=`<h3>${product.name}</h3>`
+            }
+            stringHTML = stringHTML.replace('{list}', str)
+            res.write(stringHTML);
+            res.end();
+        })
     })
 }
 
