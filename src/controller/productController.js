@@ -10,12 +10,12 @@ class ProductController {
         req.on('data', dataRaw => {
             data += dataRaw;
         })
-        req.on('end', () => {
+        req.on('end', async () => {
             if (req.method === 'GET') {
                 showList(req, res);
             } else {
                 data = qs.parse(data);
-                productService.save(data)
+                await productService.save(data)
                 showList(req, res);
             }
         })
@@ -45,23 +45,24 @@ class ProductController {
 
 function showList(req, res) {
     fs.readFile('view/product/list.html', 'utf-8', (err, stringHTML) => {
-        console.log(err)
         let str = '';
-        for (const item of productService.findAll()) {
-            str += `
-                        <article class="hentry">
-                            <header class="entry-header">
-                                <div class="entry-thumbnail">
-                                    <a href="portfolio-item.html"><img src="${item.image}" style="width: 100%; height: 200px" alt="p1"/></a>
-                                </div>
-                                <h2 class="entry-title"><a href="portfolio-item.html" rel="bookmark">${item.name}</a></h2>
-                                <a class='portfoliotype' href='portfolio-category.html'>${item.price}</a>
-                            </header>
-                        </article>`;
-        }
-        stringHTML = stringHTML.replace('{list}', str)
-        res.write(stringHTML);
-        res.end();
+        productService.findAll().then((products) => {
+            for (const item of products) {
+                str += `
+                            <article class="hentry">
+                                <header class="entry-header">
+                                    <div class="entry-thumbnail">
+                                        <a href="portfolio-item.html"><img src="${item.image}" style="width: 100%; height: 200px" alt="p1"/></a>
+                                    </div>
+                                    <h2 class="entry-title"><a href="portfolio-item.html" rel="bookmark">${item.name}</a></h2>
+                                    <a class='portfoliotype' href='portfolio-category.html'>${item.price}</a>
+                                </header>
+                            </article>`;
+            }
+            stringHTML = stringHTML.replace('{list}', str)
+            res.write(stringHTML);
+            res.end();
+        })
     })
 }
 
