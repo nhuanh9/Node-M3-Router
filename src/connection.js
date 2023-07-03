@@ -2,7 +2,7 @@ import mysql from "mysql";
 
 class Connection {
     configToMySQL = {
-        host: 'localhost',
+        host: '127.0.0.1',
         user: 'root',
         password: '123456',
         database: 'demo2006',
