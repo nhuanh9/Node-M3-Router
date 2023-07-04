@@ -10,22 +10,44 @@ class ProductController {
         req.on('data', dataRaw => {
             data += dataRaw;
         })
-        req.on('end',  () => {
+        req.on('end', () => {
             if (req.method === 'GET') {
                 showList(req, res);
             } else {
                 data = qs.parse(data);
-                productService.save(data)
-                showList(req, res);
+                productService.save(data).then(() => {
+                    showList(req, res);
+                })
             }
         })
     }
 
-    showFormEdit(req, res) {
-        fs.readFile('view/product/edit.html', 'utf-8', (err, stringHTML) => {
+    edit(req, res) {
+        let data = '';
+        req.on('data', dataRaw => {
+            data += dataRaw;
+        })
+        req.on('end', () => {
             let urlObject = url.parse(req.url, true)
-            res.write(stringHTML);
-            res.end();
+            if (req.method == 'GET') {
+                fs.readFile('view/product/edit.html', 'utf-8', (err, stringHTML) => {
+                    productService.findById(urlObject.query.idEdit).then((product) => {
+                        stringHTML = stringHTML.replace('{id}', product.id);
+                        stringHTML = stringHTML.replace('{name}', product.name);
+                        stringHTML = stringHTML.replace('{price}', product.price);
+                        stringHTML = stringHTML.replace('{quantity}', product.quantity);
+                        stringHTML = stringHTML.replace('{image}', product.image);
+                        res.write(stringHTML);
+                        res.end();
+                    });
+                })
+            } else {
+                data = qs.parse(data);
+                productService.update(data).then(() => {
+                    res.writeHead(301, {'location': '/products'}) // chuyển url = js;
+                    res.end()
+                });
+            }
         })
     }
 
@@ -42,9 +64,9 @@ class ProductController {
 function showList(req, res) {
     fs.readFile('view/product/list.html', 'utf-8', (err, stringHTML) => {
         let str = '';
-        productService.findAll().then((products)=> {
+        productService.findAll().then((products) => {
             for (const product of products) {
-                str+=`<h3>${product.name}</h3>`
+                str += `<h3>${product.name}</h3>`
             }
             stringHTML = stringHTML.replace('{list}', str)
             res.write(stringHTML);
