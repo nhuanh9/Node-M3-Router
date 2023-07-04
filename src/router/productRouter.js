@@ -4,7 +4,8 @@ import productController from "../controller/productController.js";
 
 let productRouter = {
     '/products': productController.showAll,
-    '/add-product': productController.showFormAdd,
+    // '/products/': productController.sideBar,
+    '/products/add-product': productController.showFormAdd,
     '/products/edit-product': productController.edit,
     '/products/delete': productController.delete,
 }
